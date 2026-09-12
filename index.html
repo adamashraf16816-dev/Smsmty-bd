@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عيد ميلاد سعيد يا سما</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-a: #ffe3ec;
+    --bg-b: #ffc9dc;
+    --deep: #ad2f5e;
+    --deep-2: #7a1f43;
+    --plum: #4a1230;
+    --paper: #fff6f8;
+    --line: rgba(173,47,94,0.25);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, var(--bg-a) 0%, var(--bg-b) 70%);
+    color: var(--plum);
+    font-family: 'Tajawal', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ---------- ENVELOPE SCREEN ---------- */
+  .envelope-screen{
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    background: radial-gradient(ellipse at top, var(--bg-a) 0%, var(--bg-b) 70%);
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  .envelope-screen.hidden{
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .hint{
+    color: var(--deep);
+    font-size: 1rem;
+    margin-bottom: 34px;
+    opacity: 0.85;
+    animation: pulse 2s infinite ease-in-out;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity: 0.55; }
+    50%{ opacity: 1; }
+  }
+
+  .envelope{
+    position: relative;
+    width: 260px;
+    height: 170px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .env-body{
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #fff, #ffe0ea);
+    border: 1.5px solid var(--deep);
+    border-radius: 6px;
+    box-shadow: 0 18px 40px rgba(122,31,67,0.28);
+  }
+
+  .env-body::after{
+    content:"";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    top: 42%;
+    background: linear-gradient(200deg, #ffd6e4, #ffc2d8);
+    clip-path: polygon(0 0, 50% 42%, 100% 0, 100% 100%, 0 100%);
+    border-radius: 0 0 6px 6px;
+  }
+
+  .env-flap{
+    position: absolute;
+    top: -1.5px;
+    left: -1.5px;
+    right: -1.5px;
+    height: 92px;
+    background: linear-gradient(160deg, #ffb9d2, #ff9dc0);
+    clip-path: polygon(0 0, 50% 78%, 100% 0);
+    transform-origin: top center;
+    transition: transform 0.9s cubic-bezier(.6,.1,.3,1);
+    z-index: 3;
+    border-top: 1.5px solid var(--deep);
+  }
+
+  .env-heart{
+    position: absolute;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 4;
+    color: var(--deep);
+    font-size: 1.5rem;
+    transition: opacity 0.3s ease 0.4s;
+  }
+
+  .envelope.open .env-flap{
+    transform: rotateX(180deg);
+  }
+  .envelope.open .env-heart{
+    opacity: 0;
+    transition: none;
+  }
+
+  .env-letter{
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 30%;
+    height: 70%;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px 4px 0 0;
+    z-index: 2;
+    transform: translateY(0);
+    transition: transform 0.7s ease 0.5s;
+    box-shadow: 0 -4px 14px rgba(122,31,67,0.08);
+  }
+  .envelope.open .env-letter{
+    transform: translateY(-128px);
+  }
+
+  .env-title{
+    margin-top: 30px;
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1.5rem;
+    color: var(--deep-2);
+    text-align: center;
+  }
+
+  /* ---------- LETTER CONTENT ---------- */
+  .letter-wrap{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+
+  .ornament{
+    width: 70px;
+    height: 1px;
+    background: var(--line);
+    margin: 0 auto 26px;
+  }
+
+  .photo-frame{
+    width: 220px;
+    aspect-ratio: 4/5;
+    margin: 0 auto 22px;
+    border: 1px solid var(--line);
+    padding: 10px;
+    background: linear-gradient(160deg, rgba(173,47,94,0.05), rgba(173,47,94,0.01));
+  }
+  .photo-frame-inner{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.5);
+    overflow: hidden;
+  }
+  .photo-frame-inner img{
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .photo-placeholder{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(173,47,94,0.5);
+    font-size: 0.82rem;
+    text-align: center;
+    padding: 10px;
+  }
+  .photo-placeholder svg{ width: 28px; height: 28px; opacity: 0.7; }
+
+  .caption{
+    text-align: center;
+    font-family: 'Aref Ruqaa', serif;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    color: var(--deep-2);
+    margin: 0 0 50px;
+    line-height: 1.6;
+  }
+
+  .letter-body p{
+    font-size: clamp(1rem, 2.4vw, 1.12rem);
+    line-height: 2.15;
+    color: var(--plum);
+    margin: 0 0 28px;
+    text-align: right;
+  }
+
+  .closing-line{
+    text-align: center;
+    font-family: 'Aref Ruqaa', serif;
+    font-size: clamp(2rem, 7vw, 2.9rem);
+    color: var(--deep);
+    margin-top: 60px;
+    line-height: 1.5;
+  }
+
+  .closing-line span{
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="envelope-screen" id="envelopeScreen">
+  <div class="env-title">لسّه فاكر إنّي عندي حاجة ليكي 💌</div>
+  <div style="flex:1"></div>
+  <div class="envelope" id="envelope">
+    <div class="env-body"></div>
+    <div class="env-letter"></div>
+    <div class="env-flap"></div>
+    <div class="env-heart">❤</div>
+  </div>
+  <div style="flex:1"></div>
+  <div class="hint">دوسي على الظرف</div>
+</div>
+
+<div class="letter-wrap" id="letterContent">
+  <div class="ornament"></div>
+
+  <div class="photo-frame">
+    <div class="photo-frame-inner">
+      <!-- استبدلي السطر ده بـ: <img src="اسم-الصورة.jpg" alt="سما"> -->
+      <div class="photo-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="10" r="1.6"/><path d="M21 17l-5.5-6-4 4.5-2-2L3 18"/></svg>
+        حطي صورتك هنا
+      </div>
+    </div>
+  </div>
+
+  <p class="caption">النهارده عيد ميلاد أحلى بنوتة اتولدت في الكون 🎂</p>
+
+  <div class="letter-body">
+    <p>مش عارف أقولك إيه، بس كل سنة وإنتي طيبة يا روح قلبي ❤️</p>
+
+    <p>النهارده مش مجرد عيد ميلاد، ده اليوم اللي اتولدت فيه أحسن واحدة خلت حياتي أحسن بكتير، ويعني ألف شكر لطنط وعمو إنهم جابوكي الدنيا دي اللي إنتي محلياها بوجودك فيها 😂❤️</p>
+
+    <p>وبدعي وبتمنى من كل قلبي إن حياتي كلها تبقى معاكي، علشان أنا بجد بحبك، وحبي ليكي بيزيد كل ثانية عن اللي قبلها. وحتى وإحنا بعاد، مروحتيش من دماغي ولا ثانية، ولا قدرت أبطل تفكير فيكي، وكل يوم بقتنع أكتر إني عايزك إنتي بالذات في حياتي.</p>
+
+    <p>وعندي أمل وثقة في ربنا إن في الآخر هنبقى مع بعض وأبقى معاكي، علشان مقدرش أتخيل حياتي مع حد غيرك، ومش عايز أتخيلها أصلاً. إنتي الشخص اللي نفسي أكمل معاه كل حاجة، الحلوة والوحشة، ونفضل جنب بعض مهما حصل.</p>
+
+    <p>وحابب أعرفك إنك أحسن واحدة شافتها عيني، ومفيش منك في الدنيا دي كلها بجد، ومهما شوفت ناس هتفضلي إنتي ليكي مكان مختلف عندي.</p>
+
+    <p>كل سنة وإنتي موجودة في حياتي، وكل سنة وإنتي محلية الحياة بوجودك، وإن شاء الله كل سنة جاية نكون سوا ونحتفل بيها مع بعض ❤️</p>
+  </div>
+
+  <div class="closing-line"><span>بحبك يا أحلى واحدة شافتها عيني</span></div>
+</div>
+
+<script>
+  const envelope = document.getElementById('envelope');
+  const envelopeScreen = document.getElementById('envelopeScreen');
+  const letterContent = document.getElementById('letterContent');
+
+  envelope.addEventListener('click', () => {
+    if(envelope.classList.contains('open')) return;
+    envelope.classList.add('open');
+    setTimeout(() => {
+      envelopeScreen.classList.add('hidden');
+      letterContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1300);
+  });
+</script>
+
+</body>
+</html>
